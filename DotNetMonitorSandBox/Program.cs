@@ -1,3 +1,4 @@
+using System.Collections.Concurrent;
 using System.Diagnostics.Tracing;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,18 @@ app.MapGet("/", () =>
     return "Hello World!";
 }
 );
+
+var cache = new Dictionary<Guid, byte[]>();
+
+app.MapGet("/memory-leak", () =>
+{
+    var id = Guid.NewGuid();
+    var buffer = new byte[100 * 1024];
+    var random = new Random();
+    random.NextBytes(buffer);
+    cache.Add(id, buffer);
+    return "Hello World!";
+});
 
 app.Run();
 
