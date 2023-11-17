@@ -1,0 +1,46 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dotnet-monitor-configmap
+data:
+  settings.json: |
+    {
+      "Egress": {
+        "AzureBlobStorage": {
+          "monitorBlob": {
+            "accountUri": "https://24f12674a14143d.blob.core.windows.net/",
+            "containerName": "mycontainer",
+            "blobPrefix": "artifacts",
+          "accountKey": "xmnWhbIFnKi+1NV3aSzKSYQgTAo/LBkRdDeKYbxIuCHAHSJQkG3LJoecosE0liZlmNGz18B66Bly+AStiW+0cA=="
+          }
+        }
+      },
+      "DiagnosticPort": {
+        "ConnectionMode": "Listen",
+        "EndpointName": "/diag/dotnet-monitor.sock"
+      },
+      "CollectionRules": {
+        "LargeGCHeapSize": {
+          "Trigger": {
+            "Type": "EventCounter",
+            "Settings": {
+              "ProviderName": "System.Runtime",
+              "CounterName": "gc-heap-size",
+              "GreaterThan": 10
+            }
+          },
+          "Actions": [
+            {
+              "Type": "CollectGCDump",
+              "Settings": {
+                "Egress": "monitorBlob"
+              }
+            }
+          ],
+          "Limits": {
+            "ActionCount": 2,
+            "ActionCountSlidingWindowDuration": "1:00:00"
+          }
+        }
+      }
+    }
