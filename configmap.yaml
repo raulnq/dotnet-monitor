@@ -11,7 +11,7 @@ data:
             "accountUri": "https://24f12674a14143d.blob.core.windows.net/",
             "containerName": "mycontainer",
             "blobPrefix": "artifacts",
-          "accountKey": "xmnWhbIFnKi+1NV3aSzKSYQgTAo/LBkRdDeKYbxIuCHAHSJQkG3LJoecosE0liZlmNGz18B66Bly+AStiW+0cA=="
+            "accountKey": "{account-key}"
           }
         }
       },
